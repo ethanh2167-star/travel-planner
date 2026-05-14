@@ -19,7 +19,7 @@
 
 1. Clone 專案
 ```bash
-git clone https://github.com/你的帳號/travel-planner.git
+git clone https://github.com/ethanh2167-star/travel-planner
 ```
 
 2. 複製設定檔
