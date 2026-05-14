@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:replace="${pageTitle} ?: '旅遊規劃'"> - Travel Planner</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <th:block th:replace="${extraHead}"></th:block>
+</head>
+<body>
+
+<!-- ── 導覽列 ── -->
+<nav class="navbar" sec:authorize="isAuthenticated()">
+    <div class="nav-brand">
+        <a th:href="@{/trips}">✈ Travel Planner</a>
+    </div>
+    <ul class="nav-links">
+        <li><a th:href="@{/trips}">我的行程</a></li>
+        <li><a th:href="@{/trips/new}" class="btn-sm btn-primary">+ 新行程</a></li>
+    </ul>
+    <div class="nav-user">
+        <span class="user-badge" sec:authentication="name"></span>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn-link">登出</button>
+        </form>
+    </div>
+</nav>
+
+<!-- ── 主內容 ── -->
+<main class="container">
+    <!-- Flash 訊息 -->
+    <div th:if="${successMsg}" class="alert alert-success" th:text="${successMsg}"></div>
+    <div th:if="${errorMsg}"   class="alert alert-error"   th:text="${errorMsg}"></div>
+
+    <!-- 頁面內容由子模板注入 -->
+    <th:block th:replace="${content}"></th:block>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2025 Travel Planner ─ 讓旅行更有計畫</p>
+</footer>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

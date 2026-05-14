@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>發生錯誤 - Travel Planner</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-brand"><a th:href="@{/trips}">✈ Travel Planner</a></div>
+</nav>
+<main class="container">
+    <div class="empty-state" style="padding-top:100px">
+        <div class="empty-icon">⚠️</div>
+        <h3>發生錯誤</h3>
+        <p th:text="${errorMsg ?: '未知錯誤，請稍後再試'}">錯誤訊息</p>
+        <a th:href="@{/trips}" class="btn btn-primary" style="margin-top:16px">返回首頁</a>
+    </div>
+</main>
+</body>
+</html>

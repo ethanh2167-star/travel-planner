@@ -1,0 +1,33 @@
+# 保護敏感設定
+src/main/resources/application.properties
+
+# Java 編譯檔
+target/
+*.class
+*.jar
+
+# Eclipse
+.classpath
+.project
+.settings/
+.metadata/
+
+# IDE
+*.iml
+.idea/
+
+# 系統檔
+.DS_Store
+Thumbs.db
+
+# 忽略 IDE 相關檔案
+.sts4/
+.p2/
+.m2/
+.settings/
+.project
+.classpath
+bin/
+target/
+.jdk/
+.factorypath

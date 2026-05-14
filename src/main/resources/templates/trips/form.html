@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-TW"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${trip != null} ? '編輯行程 - Travel Planner' : '新增行程 - Travel Planner'">
+        行程表單
+    </title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+
+<!-- ── 導覽列 ── -->
+<nav class="navbar">
+    <div class="nav-brand">
+        <a th:href="@{/trips}">✈ Travel Planner</a>
+    </div>
+    <ul class="nav-links">
+        <li>
+            <a th:href="${trip != null} ? @{/trips/{id}(id=${trip.id})} : @{/trips}">
+                ← 返回
+            </a>
+        </li>
+    </ul>
+    <div class="nav-user">
+        <span class="user-badge" sec:authentication="name"></span>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn-link">登出</button>
+        </form>
+    </div>
+</nav>
+
+<main class="container" style="max-width:680px">
+
+    <div class="page-header" style="margin-bottom:20px">
+        <h2 th:text="${trip != null} ? '✏️ 編輯行程' : '🗺️ 新增行程'">行程表單</h2>
+    </div>
+
+    <form th:action="${trip != null} ? @{/trips/{id}/update(id=${trip.id})} : @{/trips}"
+          method="post" class="form-card" id="tripForm">
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <!-- 行程名稱 -->
+        <div class="form-group">
+            <label for="title">行程名稱 *</label>
+            <input type="text" id="title" name="title" required
+                   maxlength="200"
+                   th:value="${trip?.title}"
+                   placeholder="例：日本關西五日遊"/>
+        </div>
+
+        <!-- 目的地 -->
+        <div class="form-group">
+            <label for="destination">目的地 *</label>
+            <input type="text" id="destination" name="destination" required
+                   maxlength="200"
+                   th:value="${trip?.destination}"
+                   placeholder="例：日本 大阪・京都・奈良"/>
+        </div>
+
+        <!-- 日期 -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="startDate">出發日期 *</label>
+                <input type="date" id="startDate" name="startDate" required
+                       th:value="${trip != null ? trip.startDate : ''}"/>
+            </div>
+            <div class="form-group">
+                <label for="endDate">返回日期 *</label>
+                <input type="date" id="endDate" name="endDate" required
+                       th:value="${trip != null ? trip.endDate : ''}"/>
+            </div>
+        </div>
+
+        <!-- 預算 -->
+        <div class="form-group">
+            <label for="budget">旅遊預算 (NT$)</label>
+            <input type="number" id="budget" name="budget"
+                   step="100" min="0"
+                   th:value="${trip?.budget}"
+                   placeholder="0"/>
+        </div>
+
+        <!-- 狀態 (只在編輯時顯示) -->
+        <div class="form-group" th:if="${trip != null}">
+            <label for="status">行程狀態</label>
+            <select id="status" name="status">
+                <option value="PLANNING"
+                        th:selected="${trip.status == 'PLANNING'}">📝 規劃中</option>
+                <option value="ONGOING"
+                        th:selected="${trip.status == 'ONGOING'}">🚀 進行中</option>
+                <option value="COMPLETED"
+                        th:selected="${trip.status == 'COMPLETED'}">✅ 已完成</option>
+            </select>
+        </div>
+
+        <!-- 說明 -->
+        <div class="form-group">
+            <label for="description">行程說明</label>
+            <textarea id="description" name="description" rows="4"
+                      placeholder="旅行目的、特別注意事項、訂房資訊..."
+                      th:text="${trip?.description}"></textarea>
+        </div>
+
+        <!-- 操作按鈕 -->
+        <div class="form-actions">
+            <a th:href="${trip != null} ? @{/trips/{id}(id=${trip.id})} : @{/trips}"
+               class="btn btn-outline">取消</a>
+            <button type="submit" class="btn btn-primary"
+                    th:text="${trip != null} ? '儲存變更' : '建立行程'">
+                儲存
+            </button>
+        </div>
+
+    </form>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2025 Travel Planner</p>
+</footer>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
